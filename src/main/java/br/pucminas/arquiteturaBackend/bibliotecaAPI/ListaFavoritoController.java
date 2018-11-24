@@ -48,7 +48,7 @@ public class ListaFavoritoController {
     }
 
     @ApiOperation(value = "Atualiza o nome do usuário", response = Usuario.class)
-    @PutMapping("usuarios/{id}")
+    @PutMapping("usuarios/{cpf}")
     Usuario replaceUsuario(@RequestBody Usuario usuario, @PathVariable String cpf) {
 
         usuarios.stream().filter(p -> p.getCpf().equals(cpf)).forEach(p -> {
@@ -59,7 +59,7 @@ public class ListaFavoritoController {
     }
 
     @ApiOperation(value = "Remove um usuário da lista", response = Void.class)
-    @DeleteMapping("usuarios/{id}")
+    @DeleteMapping("usuarios/{cpf}")
     void deleteUsuario(@PathVariable String cpf) {
         usuarios.removeIf(p -> p.getCpf().equals(cpf));
     }
