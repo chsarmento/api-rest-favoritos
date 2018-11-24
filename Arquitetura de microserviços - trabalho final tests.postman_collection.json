@@ -1,0 +1,597 @@
+{
+	"info": {
+		"_postman_id": "0fe212e8-0e0e-22cb-8279-c1cb176b4ac3",
+		"name": "Arquitetura de microserviços - trabalho final tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Lista de favoritos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "53de4786-5130-42ed-b8e4-9a14ecfa8409",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cpf\":\"12345678912\",\n\t\"isbn\":\"9780321815736\",\n\t\"titulo\":\"Software Architecture in Practice\"\n}"
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/favoritos",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"favoritos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lista de favorito",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2ea72c3a-de1d-471c-bc24-0e00e58dca8b",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"array returned\",function(){",
+							"    let data = pm.response.json();",
+							"    pm.expect(Array.isArray(data)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/favoritos/12345678912",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"favoritos",
+						"12345678912"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta livro da lista de favoritos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e4466e6-fd18-4256-bf31-3049f3b43a56",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/favoritos/12345678912/9788532530783",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"favoritos",
+						"12345678912",
+						"9788532530783"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lista de Usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ea9a87b-48e3-4d93-b05a-66a6c0f9dfb3",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"array returned\",function(){",
+							"    let data = pm.response.json();",
+							"    pm.expect(Array.isArray(data)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/usuarios",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cria usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c2d062b5-147c-424a-97df-05eb853d56c2",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202,200]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cpf\": \"12345678912\",\r\n  \"nome\": \"Diego\"\r\n}"
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/usuarios",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "101726eb-34d6-412e-850e-99b4bb043776",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cpf\": \"12345678912\",\n    \"nome\": \"Diego\"\n}"
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/usuarios/1",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"usuarios",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bc8c2c87-e410-4041-bf09-51ccb60ababa",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listafavorito.herokuapp.com/v1/public/usuarios/10",
+					"protocol": "https",
+					"host": [
+						"listafavorito",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"usuarios",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Critica de um livro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "515800d4-4e82-4000-ab8e-232a3e116126",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"array returned\",function(){",
+							"    let data = pm.response.json();",
+							"    pm.expect(Array.isArray(data)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/criticas/9780321815736",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"criticas",
+						"9780321815736"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cria critica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "276c76fb-ca46-4946-8e74-6eb8bb757e6e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"comentario\": \"Muito bom\",\n\t\"cpf\": \"12345678912\"\n}"
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/criticas/9780321815736",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"criticas",
+						"9780321815736"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta critica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9264c502-8fd0-4fa6-832e-e74024a42da6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/criticas/9780321815736/150",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"criticas",
+						"9780321815736",
+						"150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reputação de um livro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "515800d4-4e82-4000-ab8e-232a3e116126",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"array returned\",function(){",
+							"    let data = pm.response.json();",
+							"    pm.expect(Array.isArray(data)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/reputacoes/9780321815736",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"reputacoes",
+						"9780321815736"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cria reputação",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "276c76fb-ca46-4946-8e74-6eb8bb757e6e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"estrela\": 5,\n\t\"cpf\": \"12345678912\"\n}"
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/reputacoes/9780321815736",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"reputacoes",
+						"9780321815736"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deleta critica Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9264c502-8fd0-4fa6-832e-e74024a42da6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://listacritica.herokuapp.com/v1/public/reputacoes/9780321815736/150",
+					"protocol": "https",
+					"host": [
+						"listacritica",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"reputacoes",
+						"9780321815736",
+						"150"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
