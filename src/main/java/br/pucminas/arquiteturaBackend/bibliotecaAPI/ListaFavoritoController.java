@@ -15,7 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.pucminas.arquiteturaBackend.bibliotecaAPI.dto.Usuario;
 import br.pucminas.arquiteturaBackend.bibliotecaAPI.dto.Livro;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/v1/public/")
@@ -56,11 +65,6 @@ public class ListaFavoritoController {
     }
 
     // Livros
-//    @ApiOperation(value = "Busca lista de usuários", response = List.class)
-//    @GetMapping("favoritos")
-//    public List<Usuario> todosFavorito() {
-//        return usuarios;
-//    }
     @ApiOperation(value = "Adiciona um livro na lista de favorito", response = Livro.class)
     @PostMapping("favoritos")
     Livro adicionarFavorito(@RequestBody Favorito favorito) {
@@ -76,12 +80,9 @@ public class ListaFavoritoController {
             livro = obterLivroBy(favorito.getIsbn(), favorito.getTitulo());
 
             if (livro == null) {
-                livro = new Livro();
-
                 // acionar a API de consulta de outras informações
-                livro.setTitulo(favorito.getTitulo());
+                livro = obterInformacoesDoLivro(favorito.getIsbn());
 
-                livro.setIsbn(favorito.getIsbn());
                 livros.add(livro);
 
                 // adiciona livro na lista de favoritos do usuario
@@ -135,6 +136,38 @@ public class ListaFavoritoController {
                 .filter(p -> p.getCpf().equals(cpf))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private Livro obterInformacoesDoLivro(String isbn) {
+
+        Livro livro = new Livro();
+        livro.setIsbn(isbn);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String urlString = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+
+        ResponseEntity<String> response = restTemplate.exchange(urlString, HttpMethod.GET, null, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                LinkedHashMap dados = mapper.readValue(response.getBody(), LinkedHashMap.class);
+
+                if (null != dados) {
+
+                    livro.setTitulo((String) ((LinkedHashMap) ((LinkedHashMap) ((ArrayList) dados.get("items")).get(0)).get("volumeInfo")).get("title"));
+
+                    livro.setDescricao((String) ((LinkedHashMap) ((LinkedHashMap) ((ArrayList) dados.get("items")).get(0)).get("volumeInfo")).get("description"));
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return livro;
+
     }
 
 }

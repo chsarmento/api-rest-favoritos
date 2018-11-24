@@ -12,5 +12,6 @@ public class Livro {
     private String isbn;
     private String titulo;
     private Double valor;
+    private String descricao;
 
 }
